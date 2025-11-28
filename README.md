@@ -74,8 +74,8 @@ Season2/
 
 ```bash
 git add .
-git commit -m "Add project: alexliu-deoss-dashboard"
-git push origin alexliu-deoss-dashboard
+git commit -m "Add project: alice-example-project"
+git push origin alice-example-project
 ```
 
 ### 6. Submit a Pull Request (PR)
