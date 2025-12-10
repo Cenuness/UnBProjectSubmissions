@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SCAD Archives - Sistema de Consentimento e Auditoria Descentralizada</title>
+    
+    <!-- Fontes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Estilos globais -->
+    <style>
+      /* Reset básico */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Paleta Dark Academia invertida (fundos claros, letras escuras) */
+      :root {
+        /* Fundos claros */
+        --antique-ivory: #EDE0DC;
+        --faded-ivory: #F5EDE9;
+        --light-taupe: #D8C9C5;
+        
+        /* Letras escuras */
+        --charcoal-slate: #2C2E30;
+        --dark-slate: #1C1E20;
+        --oxford-brown: #4B3B2A;
+        
+        /* Cores de destaque */
+        --burnt-umber: #8A4B2A;
+        --deep-chestnut: #8B2C1F;
+        --forest-moss: #3B3F2F;
+        --vintage-maroon: #6B2E2F;
+        
+        /* Neutras */
+        --muted-olive: #85614B;
+        --dusty-taupe: #0D8B7B;
+        --muted-bronze: #8A7B5F;
+      }
+
+      body {
+        font-family: 'Crimson Text', 'Times New Roman', serif;
+        background-color: var(--antique-ivory);
+        color: var(--charcoal-slate);
+        line-height: 1.6;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        background-image: 
+          radial-gradient(circle at 10% 20%, rgba(237, 224, 220, 0.3) 0%, transparent 20%),
+          radial-gradient(circle at 90% 80%, rgba(216, 201, 197, 0.2) 0%, transparent 20%);
+      }
+
+      #root {
+        width: 100%;
+        min-height: 100vh;
+      }
+
+      /* Estilos para scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--faded-ivory);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--light-taupe);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--muted-bronze);
+      }
+
+      /* Animações sutis */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s ease-out;
+      }
+
+      @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.7; }
+        100% { opacity: 1; }
+      }
+
+      .pulse {
+        animation: pulse 2s infinite;
+      }
+
+      /* Responsividade */
+      @media (max-width: 768px) {
+        body {
+          padding: 0.5rem;
+        }
+        
+        ::-webkit-scrollbar {
+          width: 6px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          font-size: 14px;
+        }
+      }
+
+      /* Estilos para impressão */
+      @media print {
+        body {
+          background: white !important;
+          color: black !important;
+        }
+        
+        button, 
+        input,
+        .no-print {
+          display: none !important;
+        }
+      }
+
+      /* Estilo para seleção de texto */
+      ::selection {
+        background-color: rgba(138, 75, 42, 0.3);
+        color: var(--charcoal-slate);
+      }
+
+      /* Placeholders estilizados */
+      ::placeholder {
+        color: var(--muted-bronze);
+        opacity: 0.7;
+        font-style: italic;
+      }
+
+      /* Estilo para inputs selecionados */
+      input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: var(--burnt-umber) !important;
+        box-shadow: 0 0 0 2px rgba(138, 75, 42, 0.1);
+      }
+
+      /* Estilo para tooltips nativos */
+      [title] {
+        position: relative;
+      }
+
+      [title]:hover::after {
+        content: attr(title);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--dark-slate);
+        color: var(--antique-ivory);
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        z-index: 1000;
+        margin-bottom: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      }
+
+      /* Estilo para elementos desabilitados */
+      [disabled] {
+        opacity: 0.5;
+        cursor: not-allowed !important;
+      }
+
+      /* Estilo para checkboxes e radios */
+      input[type="checkbox"], input[type="radio"] {
+        accent-color: var(--burnt-umber);
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.5rem;
+      }
+
+      /* Estilo para selects */
+      select {
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238A4B2A' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 16px 12px;
+        padding-right: 2.5rem;
+        appearance: none;
+      }
+
+      /* Estilo para badges de status */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .status-active {
+        background-color: rgba(59, 63, 47, 0.1);
+        color: var(--forest-moss);
+        border: 1px solid var(--forest-moss);
+      }
+
+      .status-pending {
+        background-color: rgba(138, 123, 95, 0.1);
+        color: var(--muted-bronze);
+        border: 1px solid var(--muted-bronze);
+      }
+
+      .status-expired {
+        background-color: rgba(107, 46, 47, 0.1);
+        color: var(--vintage-maroon);
+        border: 1px solid var(--vintage-maroon);
+      }
+
+      /* Estilo para cards de processo */
+      .process-card {
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+      }
+
+      .process-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(44, 46, 48, 0.1);
+      }
+
+      .process-card-pending {
+        border-left-color: var(--muted-bronze);
+      }
+
+      .process-card-approved {
+        border-left-color: var(--forest-moss);
+      }
+
+      .process-card-denied {
+        border-left-color: var(--vintage-maroon);
+      }
+
+      /* Estilo para contadores */
+      .counter-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 24px;
+        height: 24px;
+        padding: 0 6px;
+        background-color: var(--deep-chestnut);
+        color: var(--antique-ivory);
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-left: 0.5rem;
+      }
+
+      /* Estilo para timeline */
+      .timeline {
+        position: relative;
+        padding-left: 2rem;
+      }
+
+      .timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: var(--light-taupe);
+      }
+
+      .timeline-item {
+        position: relative;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+      }
+
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -2rem;
+        top: 0;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: var(--burnt-umber);
+        border: 2px solid var(--antique-ivory);
+      }
+
+      .timeline-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Scripts -->
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Meta tags adicionais -->
+    <meta name="description" content="SCAD Archives - Sistema de Consentimento e Auditoria Descentralizada. Gerencie processos de consentimento, perfis e contratos na blockchain.">
+    <meta name="keywords" content="blockchain, privacidade, dados, consentimento, SCAD, CESS, Web3, processos, contratos">
+    <meta name="author" content="SCAD Archives">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="SCAD Archives - Sistema de Consentimento e Auditoria Descentralizada">
+    <meta property="og:description" content="Gerencie processos de consentimento, perfis e contratos na blockchain.">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚖️</text></svg>">
+    
+    <!-- Script de fallback para navegadores sem JavaScript -->
+    <noscript>
+      <style>
+        body {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding: 2rem;
+        }
+        
+        .no-js-message {
+          background-color: var(--faded-ivory);
+          border: 2px solid var(--vintage-maroon);
+          border-radius: 8px;
+          padding: 3rem;
+          max-width: 600px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .no-js-message h1 {
+          color: var(--vintage-maroon);
+          margin-bottom: 1rem;
+        }
+        
+        .no-js-message p {
+          color: var(--oxford-brown);
+          margin-bottom: 1.5rem;
+          font-size: 1.1rem;
+        }
+      </style>
+      <div class="no-js-message">
+        <h1>⚖️ SCAD ARCHIVES</h1>
+        <p><strong>JavaScript é necessário para executar esta aplicação.</strong></p>
+        <p>O SCAD Archives é uma aplicação Web3 que requer JavaScript para conectar com a blockchain e gerenciar seus dados de forma segura.</p>
+        <p>Por favor, habilite o JavaScript em seu navegador e recarregue a página.</p>
+        <p style="margin-top: 2rem; font-style: italic; color: var(--muted-bronze);">
+          Sistema de Consentimento e Auditoria Descentralizada
+        </p>
+      </div>
+    </noscript>
+  </body>
+</html>
